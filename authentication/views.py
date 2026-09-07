@@ -8,8 +8,7 @@ def register_view(request):
     if request.method == 'POST':
         form = OfficeSyncRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
+            form.save()
             return redirect('login')
     else:
         form = OfficeSyncRegistrationForm()
