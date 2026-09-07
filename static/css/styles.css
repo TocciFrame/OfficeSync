@@ -1,0 +1,166 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* Headings & Text */
+h2 {
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+}
+
+p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Controls */
+form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+form p {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* Buttons */
+button[type="submit"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: #1d4ed8;
+}
+
+/* Bottom Links */
+.auth-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.auth-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Custom Form Error Styles */
+.error-list {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.error-text {
+    color: #dc2626 !important; /* Bright Red */
+    font-size: 0.8rem !important; /* Small reduced text size */
+    margin-bottom: 0.25rem !important;
+    list-style: none; /* Ensures no bullets display */
+    text-align: left;
+}
+
+/* Reduce Help Text & Password Instruction Size */
+.helptext, form ul, form ul li {
+    font-size: 0.72rem !important;
+    color: #64748b !important;
+    line-height: 1.2 !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Remove default list styling from password hints */
+form ul {
+    padding-left: 1.2rem !important;
+}
+
+/* Inline Radio Choices for Role Field */
+div[id*="role"], ul[id*="role"] {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1.25rem !important;
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+div[id*="role"] label, ul[id*="role"] label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    font-weight: 500 !important;
+    color: #334155 !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+}
+
+div[id*="role"] input[type="radio"], ul[id*="role"] input[type="radio"] {
+    margin: 0 !important;
+    width: auto !important;
+    cursor: pointer !important;
+}
