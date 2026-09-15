@@ -1,0 +1,31 @@
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+}
+
+.card-container {
+    background: #ffffff !important;
+    padding: 3rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
+    width: 600px !important;
+    border-top: 5px solid #dc2626 !important;
+}
+
+.setting-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid #f1f5f9;
+}
+.setting-row input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+
+.primary-btn {
+    width: 100%; background-color: #dc2626; color: white; border: none;
+    padding: 0.85rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1.5rem;
+}
+.primary-btn:hover { background-color: #b91c1c; }
+.back-link { display: inline-block; margin-top: 1rem; color: #dc2626; text-decoration: none; font-weight: 500; }

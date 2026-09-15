@@ -1,0 +1,81 @@
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    /* Dark gradient overlay + background image */
+    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+                url('/static/images/authentication/GLE-Building.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100vh !important;
+    margin: 0 !important;
+}
+
+.auth-card {
+    background: #ffffff !important;
+    padding: 2.5rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+    width: 360px !important;
+    box-sizing: border-box !important;
+    border-top: 5px solid #dc2626 !important;
+}
+
+.auth-card h1 {
+    color: #0f172a !important;
+    margin: 0 0 0.25rem 0 !important;
+    font-size: 1.85rem !important;
+    font-weight: 700 !important;
+}
+
+.auth-card p {
+    color: #64748b !important;
+    margin: 0 0 1.5rem 0 !important;
+    font-size: 0.95rem !important;
+}
+
+.auth-card input[type="text"],
+.auth-card input[type="password"] {
+    width: 100% !important;
+    padding: 0.8rem 1rem !important;
+    margin-bottom: 1.1rem !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    font-size: 0.95rem !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    background-color: #f8fafc !important;
+}
+
+.auth-card input:focus {
+    border-color: #dc2626 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+}
+
+.auth-card button {
+    width: 100% !important;
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.85rem !important;
+    border-radius: 6px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease-in-out !important;
+}
+
+.auth-card button:hover {
+    background-color: #b91c1c !important;
+}
+
+.auth-card a {
+    color: #dc2626 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+
+.auth-card a:hover {
+    text-decoration: underline !important;
+}

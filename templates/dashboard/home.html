@@ -5,17 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OfficeSync - Home</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=1.1">
 </head>
 <body>
-    <div class="container">
+    <div class="dashboard-card">
         <h2>Home Screen</h2>
         <p>Welcome, <strong>{{ request.user.username }}</strong>!</p>
-        
-        <form methods="post" action="{% url 'logout' %}">
+
+        <nav class="nav-links">
+            <a href="{% url 'user_profile:profile' %}">Profile</a>
+            <a href="{% url 'user_settings:settings' %}">Settings</a>
+        </nav>
+
+        <form method="post" action="{% url 'authentication:logout' %}">
             {% csrf_token %}
-            <button type="submit">Logout</button>
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>
+    <script src="{% static 'js/dashboard/home.js' %}"></script>
 </body>
 </html>

@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -38,8 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'authentication',
-    'dashboard',
+    'apps.authentication',
+    'apps.dashboard',
+    'apps.user_profile',
+    'apps.user_settings',
 ]
 
 MIDDLEWARE = [
@@ -75,16 +82,18 @@ WSGI_APPLICATION = 'officesync.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.mvrupafoyixysbegyvnf',
-        'PASSWORD': 'vVFawJrbEvAD1kNK',
-        'HOST': 'aws-0-ap-northeast-2.pooler.supabase.com',
-        'PORT': '5432',
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
-}
+else:
+    raise ValueError("DATABASE_URL environment variable is missing or empty inside .env")
 
 
 # Password validation
@@ -136,6 +145,6 @@ MAILERS = {
 }
 
 # Redirection URLs
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
-LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard:home'
+LOGOUT_REDIRECT_URL = 'authentication:login'
+LOGIN_URL = 'authentication:login'

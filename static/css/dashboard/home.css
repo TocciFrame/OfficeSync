@@ -1,0 +1,25 @@
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+}
+
+.dashboard-card {
+    background: #ffffff !important;
+    padding: 3.5rem !important;
+    border-radius: 14px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+    width: 800px !important; /* Expanded fixed width */
+    box-sizing: border-box !important;
+    border-top: 6px solid #dc2626 !important;
+}
+
+.dashboard-card h2 { color: #0f172a !important; margin-top: 0 !important; font-size: 2.2rem !important; }
+.nav-links { margin: 2rem 0 !important; padding: 1.25rem 0 !important; border-top: 1px solid #e2e8f0 !important; border-bottom: 1px solid #e2e8f0 !important; }
+.nav-links a { color: #dc2626 !important; text-decoration: none !important; font-weight: 600 !important; font-size: 1.1rem !important; margin-right: 2rem !important; }
+.logout-btn { width: 100% !important; background-color: #dc2626 !important; color: #ffffff !important; border: none !important; padding: 1rem !important; border-radius: 6px !important; font-size: 1.05rem !important; font-weight: 600 !important; cursor: pointer !important; }
+.logout-btn:hover { background-color: #b91c1c !important; }
