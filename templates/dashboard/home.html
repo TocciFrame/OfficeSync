@@ -3,25 +3,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OfficeSync - Home</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=1.1">
+    <title>OfficeSync - Live Availability Board</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=3.1">
 </head>
 <body>
-    <div class="dashboard-card">
-        <h2>Home Screen</h2>
-        <p>Welcome, <strong>{{ request.user.username }}</strong>!</p>
+    <div class="board-container">
+        <!-- Header -->
+        <header class="board-header">
+            <h2>OfficeSync Live Board</h2>
+            <div class="user-actions">
+                <a href="{% url 'user_profile:profile' %}">Profile</a>
+                <a href="{% url 'user_settings:settings' %}">Settings</a>
+                <form method="post" action="{% url 'authentication:logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-link">Logout</button>
+                </form>
+            </div>
+        </header>
 
-        <nav class="nav-links">
-            <a href="{% url 'user_profile:profile' %}">Profile</a>
-            <a href="{% url 'user_settings:settings' %}">Settings</a>
-        </nav>
+        <!-- Admin Quick Status Manager (Visible to Staff/Superusers) -->
+        {% if request.user.is_staff or request.user.is_superuser %}
+        <section class="admin-panel">
+            <h3>Faculty Status Manager</h3>
+            <form method="post" class="status-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    <select name="status">
+                        <option value="IN_OFFICE" {% if my_status.status == 'IN_OFFICE' %}selected{% endif %}>🟢 In-Office</option>
+                        <option value="IN_CLASS" {% if my_status.status == 'IN_CLASS' %}selected{% endif %}>🟡 In-Class</option>
+                        <option value="ON_BREAK" {% if my_status.status == 'ON_BREAK' %}selected{% endif %}>🟠 On-Break</option>
+                        <option value="OUT" {% if my_status.status == 'OUT' %}selected{% endif %}>🔴 Out of Office</option>
+                    </select>
 
-        <form method="post" action="{% url 'authentication:logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">Logout</button>
-        </form>
+                    <input type="text" name="room_number" value="{{ my_status.room_number }}" placeholder="Room No.">
+                    <input type="text" name="back_at" value="{{ my_status.back_at }}" placeholder="Back at... (e.g. 2:00 PM)">
+                    <button type="submit" class="update-btn">Update Status</button>
+                </div>
+            </form>
+        </section>
+        {% endif %}
+
+        <!-- Live Search Bar -->
+        <section class="search-section">
+            <form method="get" class="search-form">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search professor name or department...">
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <!-- Live Master Status Grid -->
+        <section class="grid-section">
+            <div class="faculty-grid">
+                {% for item in faculty_list %}
+                <div class="faculty-card status-{{ item.status|lower }}">
+                    <h4>Prof. {{ item.user.first_name }} {{ item.user.last_name|default:item.user.username }}</h4>
+                    <p class="dept">{{ item.department }}</p>
+                    <p class="room">📍 {{ item.room_number }}</p>
+
+                    <div class="badge badge-{{ item.status|lower }}">
+                        {{ item.get_status_display }}
+                    </div>
+
+                    {% if item.back_at %}
+                        <p class="back-time">⏱ Back at {{ item.back_at }}</p>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p>No faculty members found.</p>
+                {% endfor %}
+            </div>
+        </section>
     </div>
-    <script src="{% static 'js/dashboard/home.js' %}"></script>
 </body>
 </html>
