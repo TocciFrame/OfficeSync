@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/landing/landing.css' %}?v=2.5">
+    <script src="{% static 'js/landing/landing.js' %}?v=2.0"></script>
+    <title>OfficeSync</title>
+</head>
+<body>
+    <div class="landing-page">
+        <header class="landing-header">
+            <div class="brand" style="display: flex; align-items: center; gap: 0.75rem;">
+                <!-- Pure HTML/SVG Logo Icon -->
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                    <rect width="36" height="36" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+                    <rect x="7" y="10" width="5" height="16" rx="2.5" fill="#DC2626"/>
+                    <rect x="15" y="11" width="14" height="4" rx="2" fill="#F8FAFC"/>
+                    <rect x="15" y="18" width="10" height="3.5" rx="1.75" fill="#64748B"/>
+                    <rect x="15" y="23.5" width="7" height="2.5" rx="1.25" fill="#475569"/>
+                </svg>
+
+                <!-- Brand Title -->
+                <h1 style="color: #ffffff; margin: 0; font-size: 1rem; font-weight: 200; font-family: 'DM Serif Display', Georgia, serif;">OfficeSync</h1>
+            </div>
+            <nav class="landing-nav">
+                <ul>
+                    <a href="{% url 'authentication:login' %}" class="btn btn-outline">Sign In</a>
+                    <a href="{% url 'authentication:register' %}" class="btn btn-primary">Register</a>
+                </ul>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-container">
+            <div class="hero-content">
+                <!-- 1. Badge sits above everything -->
+                <div class="badge-wrapper">
+                    <span class="pulse-dot"></span>
+                    <span class="badge-tag">Live Tracking Enabled</span>
+                </div>
+
+                <!-- 2. Flex wrapper for Left Text + Right Widget -->
+                <div class="hero-split-layout">
+                    <!-- Left Side: Text and Buttons -->
+                    <div class="hero-text-block">
+                        <h2 style="font-family: 'DM Serif Display', Georgia, serif;">Know Who's In Before You Walk Across Campus</h2>
+                        <p>OfficeSync is your department's real-time faculty availability board. See who's in office, in class, on break, or out — without sending a single email.</p>
+                        
+                        <div class="cta-buttons">
+                            <a href="{% url 'dashboard:home' %}" class="btn btn-primary-lg">View Live Board ➔</a>
+                            <a href="{% url 'authentication:register' %}" class="btn btn-secondary-lg">Create Account</a>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Live Status Widget -->
+                    <div class="hero-side-box">
+                        <div class="widget-header">
+                            <span class="widget-title">Computer Science — Live</span>
+                            <span class="widget-updated">Updated just now</span>
+                        </div>
+
+                        <div class="widget-list">
+                            <!-- Faculty Row 1 -->
+                            <div class="widget-row">
+                                <div class="faculty-info">
+                                    <span class="faculty-name">Dr. Cherry Lyn Sta. Romana</span>
+                                    <span class="faculty-meta">CCS Dean</span>
+                                </div>
+                                <div class="status-col">
+                                    <span class="w-badge w-badge-office">In-Office</span>
+                                </div>
+                            </div>
+
+                            <!-- Faculty Row 2 -->
+                            <div class="widget-row">
+                                <div class="faculty-info">
+                                    <span class="faculty-name">Mr. Jay Vince Serato</span>
+                                    <span class="faculty-meta">CCS Faculty</span>
+                                </div>
+                                <div class="status-col">
+                                    <span class="w-badge w-badge-class">In-Class</span>
+                                    <span class="back-time">Back at 2:30 PM</span>
+                                </div>
+                            </div>
+
+                            <!-- Faculty Row 3 -->
+                            <div class="widget-row">
+                                <div class="faculty-info">
+                                    <span class="faculty-name">Mr. Joemarie Amparo</span>
+                                    <span class="faculty-meta">CCS Faculty</span>
+                                </div>
+                                <div class="status-col">
+                                    <span class="w-badge w-badge-break">On-Break</span>
+                                    <span class="back-time">Back at 1:30 PM</span>
+                                </div>
+                            </div>
+
+                            <!-- Faculty Row 4 -->
+                            <div class="widget-row">
+                                <div class="faculty-info">
+                                    <span class="faculty-name">Mr. Jun Albert Pardillo</span>
+                                    <span class="faculty-meta">CCS Faculty</span>
+                                </div>
+                                <div class="status-col">
+                                    <span class="w-badge w-badge-out">Out</span>
+                                    <span class="back-time">Back at 3:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-wrapper">
+            <!-- Header sitting centered ABOVE the grid -->
+            <div class="features-header">
+                <h2 style="font-family: 'DM Serif Display', Georgia, serif">Built for academic departments</h2>
+                <p>Simple, purposeful, and always up-to-date.</p>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="features-section">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time Statuses</h3>
+                    <p>Faculty update their presence status with a single click—In-Office, In-Class, or On-Break.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Room Tracking</h3>
+                    <p>Instantly check room numbers and "Back at..." time notes before heading out for consultation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Instant Directory Search</h3>
+                    <p>Find specific professors or filter by department within a centralized campus grid.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">48</span>
+                    <span class="stat-label">Faculty Members</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Departments</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">&lt; 30s</span>
+                    <span class="stat-label">Status Update Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Zero Email Required</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Banner -->
+        <section class="final-cta-section">
+            <h2>Ready to stop guessing?</h2>
+            <p>Join your department on OfficeSync today.</p>
+            <a href="{% url 'authentication:register' %}" class="btn btn-primary-lg">Create Your Account</a>
+        </section>
+
+        <!-- Bottom Footer Navigation -->
+        <footer class="landing-footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                        <rect width="36" height="36" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+                        <rect x="7" y="10" width="5" height="16" rx="2.5" fill="#DC2626"/>
+                        <rect x="15" y="11" width="14" height="4" rx="2" fill="#F8FAFC"/>
+                        <rect x="15" y="18" width="10" height="3.5" rx="1.75" fill="#64748B"/>
+                        <rect x="15" y="23.5" width="7" height="2.5" rx="1.25" fill="#475569"/>
+                    </svg>
+                    <span class="footer-brand-title">OfficeSync</span>
+                </div>
+
+
+                <div class="footer-copy">
+                    <p>&copy; 2026 OfficeSync. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
