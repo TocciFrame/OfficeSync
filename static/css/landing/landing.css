@@ -1,8 +1,6 @@
-/* Base Reset & Background */
-body {
+/* Base Reset & Background Scoped Exclusively to Landing Page */
+body.landing-page {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-    background: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), 
-                url('/static/images/authentication/GLE-Building.jpg') no-repeat center center fixed !important;
     background-size: cover !important;
     color: #f8fafc !important;
     margin: 0 !important;
@@ -33,7 +31,7 @@ body {
     right: 50% !important;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    margin-top: -2rem !important; /* Pulls header to top edge */
+    margin-top: -2rem !important;
     
     /* Inner padding keeps content aligned with the 1200px container */
     padding: 1.5rem calc((100vw - 1200px) / 2 + 1.5rem) !important;
@@ -501,6 +499,15 @@ body {
 }
 
 @media (max-width: 868px) {
+    .hero-split-layout {
+        flex-direction: column !important;
+    }
+
+    .hero-side-box {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
     .stats-grid {
         grid-template-columns: repeat(2, 1fr) !important;
     }

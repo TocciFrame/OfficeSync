@@ -1,29 +1,88 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>OfficeSync - Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeSync - Sign In</title>
     <link rel="stylesheet" href="{% static 'css/authentication/login.css' %}?v=2.0">
 </head>
-<body>
+<body class="auth-page">
+    <a href="{% url 'landing:index' %}" class="back-link">← Back</a>
+
     <div class="auth-card">
-        <h1>OfficeSync</h1>
-        <p>Sign in to your account</p>
-        
-        {% if error %}
-            <p style="color: #dc2626; font-size: 0.9rem;">{{ error }}</p>
+        <div class="brand">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                <rect width="36" height="36" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+                <rect x="7" y="10" width="5" height="16" rx="2.5" fill="#DC2626"/>
+                <rect x="15" y="11" width="14" height="4" rx="2" fill="#F8FAFC"/>
+                <rect x="15" y="18" width="10" height="3.5" rx="1.75" fill="#64748B"/>
+                <rect x="15" y="23.5" width="7" height="2.5" rx="1.25" fill="#475569"/>
+            </svg>
+            <h2 style="font-family: 'DM Serif Display', Georgia, serif;">OfficeSync</h2>
+        </div>
+        <p class="auth-subtitle">Sign in to your account</p>
+
+        <!-- Message/Error Banners -->
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <div class="success-banner">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% elif message.tags == 'error' and request.method == 'POST' %}
+                        <div class="error-banner">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endif %}
 
-        <form method="post">
+        <form method="POST" action="{% url 'authentication:login' %}">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="Username" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
-            <button type="submit">Sign In</button>
+            {{ form.role }}
+
+            <!-- Role Selector Tabs -->
+            <div class="role-toggle-group">
+                <button type="button" class="role-tab active" data-role="student">Student</button>
+                <button type="button" class="role-tab" data-role="faculty">Faculty</button>
+            </div>
+
+            <!-- Identifier Field: Email or School ID -->
+            <div class="form-group">
+                <label for="{{ form.email_or_school_id.id_for_label }}">Institutional Email / School ID#</label>
+                {{ form.email_or_school_id }}
+                {% if form.email_or_school_id.errors %}
+                    <span class="field-error">{{ form.email_or_school_id.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                <div class="password-wrapper">
+                    {{ form.password }}
+                    <button type="button" class="toggle-password">SHOW</button>
+                </div>
+                {% if form.password.errors %}
+                    <span class="field-error">{{ form.password.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-block">Sign In as Student</button>
         </form>
 
-        <!-- Redirect Link to Register Page -->
-        <p>Don't have an account? <a href="{% url 'authentication:register' %}">Create one here</a></p>
+        <div class="auth-card-divider"></div>
+
+        <p class="auth-footer-text">
+            Don't have an account? <a href="{% url 'authentication:register' %}">Create one here</a>
+        </p>
     </div>
+
+    <p class="bottom-caption">University Department Faculty Availability Board</p>
+
     <script src="{% static 'js/authentication/login.js' %}"></script>
 </body>
 </html>

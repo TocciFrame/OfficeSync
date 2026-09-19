@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import FacultyStatus
 
 @login_required
-def home_view(request):
+def dashboard_view(request):
     if request.method == "POST" and (request.user.is_staff or request.user.is_superuser):
         status_obj, _ = FacultyStatus.objects.get_or_create(user=request.user)
         status_obj.status = request.POST.get("status", status_obj.status)

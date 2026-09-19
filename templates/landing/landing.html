@@ -8,7 +8,8 @@
     <script src="{% static 'js/landing/landing.js' %}?v=2.0"></script>
     <title>OfficeSync</title>
 </head>
-<body>
+<body class="landing-page"; style="background-image: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), 
+                      url('/static/images/landing/citu_lib.png') !important;">
     <div class="landing-page">
         <header class="landing-header">
             <div class="brand" style="display: flex; align-items: center; gap: 0.75rem;">
@@ -48,7 +49,7 @@
                         <p>OfficeSync is your department's real-time faculty availability board. See who's in office, in class, on break, or out — without sending a single email.</p>
                         
                         <div class="cta-buttons">
-                            <a href="{% url 'dashboard:home' %}" class="btn btn-primary-lg">View Live Board ➔</a>
+                            <a href="{% url 'dashboard:dashboard' %}" class="btn btn-primary-lg">View Live Board ➔</a>
                             <a href="{% url 'authentication:register' %}" class="btn btn-secondary-lg">Create Account</a>
                         </div>
                     </div>
@@ -126,17 +127,17 @@
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <h3>Real-Time Statuses</h3>
-                    <p>Faculty update their presence status with a single click—In-Office, In-Class, or On-Break.</p>
+                    <p>Faculty update their availability in seconds. Students see real-time status — In-Office, In-Class, On-Break, or Out — the moment it changes.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📍</div>
-                    <h3>Room Tracking</h3>
-                    <p>Instantly check room numbers and "Back at..." time notes before heading out for consultation.</p>
+                    <h3>Department Directory</h3>
+                    <p>Browse the full faculty roster by department. Filter, search, and find the right professor without digging through outdated PDFs.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔍</div>
-                    <h3>Instant Directory Search</h3>
-                    <p>Find specific professors or filter by department within a centralized campus grid.</p>
+                    <h3>Zero Wasted Trips</h3>
+                    <p>Check before you go. Know whether your advisor is actually in their office before you walk across campus in the rain.</p>
                 </div>
             </div>
         </section>
@@ -145,11 +146,11 @@
         <section class="stats-section">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span class="stat-number">48</span>
+                    <span class="stat-number">{{faculty_count}}</span>
                     <span class="stat-label">Faculty Members</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">6</span>
+                    <span class="stat-number">{{department_count}}</span>
                     <span class="stat-label">Departments</span>
                 </div>
                 <div class="stat-item">

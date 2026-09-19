@@ -19,9 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.landing.urls')),
-    path('auth/', include('apps.authentication.urls')),
-    path('profile/', include('apps.user_profile.urls')),
-    path('settings/', include('apps.user_settings.urls')),
-    path('', include('apps.dashboard.urls')),
+    path('', include(('apps.landing.urls', 'landing'), namespace='landing')),
+    path('auth/', include(('apps.authentication.urls', 'authentication'), namespace='authentication')),
+    path('profile/', include(('apps.user_profile.urls', 'user_profile'), namespace='profile')),
+    path('settings/', include(('apps.user_settings.urls', 'user_settings'), namespace='settings')),
+    path('dashboard/', include(('apps.dashboard.urls', 'dashboard'), namespace='dashboard')),
 ]

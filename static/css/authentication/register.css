@@ -1,87 +1,299 @@
-body {
+/* Base Reset & Centered Background Layout */
+body.auth-page {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+    background: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), 
                 url('/static/images/authentication/GLE-Building.jpg') no-repeat center center fixed !important;
     background-size: cover !important;
+    color: #f8fafc !important;
+    margin: 0 !important;
+    min-height: 100vh !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
-    padding: 2rem 0 !important;
+    padding: 2.5rem 1rem !important;
     box-sizing: border-box !important;
 }
 
-.auth-card {
-    background: #ffffff !important;
-    padding: 2.5rem !important;
-    border-radius: 12px !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
-    width: 380px !important;
-    box-sizing: border-box !important;
-    border-top: 5px solid #dc2626 !important;
-}
-
-.auth-card h1 {
-    color: #0f172a !important;
-    margin: 0 0 0.25rem 0 !important;
-    font-size: 1.85rem !important;
-    font-weight: 700 !important;
-}
-
-.auth-card p {
+/* Top Back Navigation Link */
+.back-link {
+    position: absolute !important;
+    top: 1.5rem !important;
+    left: 1.5rem !important;
     color: #64748b !important;
-    margin: 0 0 1.5rem 0 !important;
-    font-size: 0.95rem !important;
+    text-decoration: none !important;
+    font-size: 0.9rem !important;
+    transition: color 0.2s ease !important;
 }
 
-.auth-card input[type="text"],
-.auth-card input[type="password"],
-.auth-card input[type="email"],
-.auth-card select {
+.back-link:hover {
+    color: #f8fafc !important;
+}
+
+/* Glassmorphic Container Card */
+.auth-card {
     width: 100% !important;
-    padding: 0.8rem 1rem !important;
-    margin-bottom: 1rem !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    font-size: 0.95rem !important;
+    max-width: 480px !important;
+    background: rgba(30, 41, 59, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 2.5rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     box-sizing: border-box !important;
+}
+
+/* Header Branding */
+.brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.brand-bar {
+    width: 4px !important;
+    height: 22px !important;
+    background-color: #dc2626 !important;
+    border-radius: 2px !important;
+}
+
+.brand h2 {
+    color: #ffffff !important;
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.auth-subtitle {
+    color: #64748b !important;
+    font-size: 0.95rem !important;
+    margin: 0 0 1.5rem 0 !important;
+}
+
+/* Two-Column Form Row (First / Last Name) */
+.form-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+}
+
+/* Form Groups & Labels */
+.form-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.4rem !important;
+    margin-bottom: 1.15rem !important;
+}
+
+.form-group label {
+    color: #94a3b8 !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+}
+
+/* Base Input Controls */
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"],
+.form-input {
+    width: 100% !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid #334155 !important;
+    color: #ffffff !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px !important;
+    font-size: 0.95rem !important;
     outline: none !important;
-    background-color: #f8fafc !important;
-    color: #0f172a !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease-in-out !important;
+}
+
+.auth-card input::placeholder,
+.form-input::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
 }
 
 .auth-card input:focus,
-.auth-card select:focus {
+.form-input:focus {
     border-color: #dc2626 !important;
-    background-color: #ffffff !important;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
 }
 
-.auth-card button {
+/* Custom Select Dropdown with Low-Opacity Text & Inset Arrow */
+.auth-card select,
+.form-select {
     width: 100% !important;
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid #334155 !important;
+    color: #64748b !important; /* Low-opacity text matching input placeholders */
+    padding: 0.75rem 2.75rem 0.75rem 1rem !important; /* Right padding pulls arrow away from border */
+    border-radius: 8px !important;
+    font-size: 0.95rem !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out !important;
+
+    /* SVG arrow icon set inset from edge */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 1.1rem !important;
+}
+
+.auth-card select:focus,
+.auth-card select:not([value=""]),
+.form-select:focus {
+    border-color: #dc2626 !important;
+    color: #f8fafc !important; /* Full brightness text on selection/focus */
+}
+
+.auth-card select option {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    padding: 0.5rem !important;
+}
+
+.auth-card select option[value=""] {
+    color: #64748b !important;
+}
+
+/* Two-Card Role Selector Group */
+.role-card-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+    margin-top: 0.25rem !important;
+}
+
+.role-card {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid #334155 !important;
+    padding: 0.85rem !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.2rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.role-card.active {
+    border-color: #dc2626 !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+    box-shadow: 0 0 0 1px #dc2626 !important;
+}
+
+.role-card-title {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+}
+
+.role-card-desc {
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+}
+
+/* Password Input & Far Right SHOW Button */
+.password-wrapper {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.password-wrapper input {
+    width: 100% !important;
+    padding-right: 4.5rem !important;
+}
+
+.toggle-password {
+    position: absolute !important;
+    right: 0.85rem !important;
+    background: transparent !important;
+    border: none !important;
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    cursor: pointer !important;
+}
+
+.toggle-password:hover {
+    color: #94a3b8 !important;
+}
+
+.field-hint {
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+    margin-top: 0.2rem !important;
+}
+
+/* Validation Error Messages & Banners */
+.field-error {
+    color: #ef4444 !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    margin-top: 0.25rem !important;
+    display: block !important;
+}
+
+.error-banner {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid #ef4444 !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.error-banner p {
+    color: #ef4444 !important;
+    margin: 0 !important;
+    font-size: 0.85rem !important;
+}
+
+/* Submit Action Button & Footer Link */
+.btn-primary {
     background-color: #dc2626 !important;
     color: #ffffff !important;
     border: none !important;
-    padding: 0.85rem !important;
-    border-radius: 6px !important;
-    font-size: 1rem !important;
+    border-radius: 8px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
-    transition: background-color 0.2s ease-in-out !important;
-    margin-top: 0.5rem !important;
+    transition: background-color 0.2s ease !important;
 }
 
-.auth-card button:hover {
+.btn-primary:hover {
     background-color: #b91c1c !important;
 }
 
-.auth-card a {
-    color: #dc2626 !important;
-    text-decoration: none !important;
-    font-weight: 500 !important;
+.btn-block {
+    width: 100% !important;
+    padding: 0.85rem 1rem !important;
+    margin-top: 0.5rem !important;
+    font-size: 1rem !important;
 }
 
-.auth-card a:hover {
+.auth-footer-text {
+    text-align: center !important;
+    color: #64748b !important;
+    font-size: 0.85rem !important;
+    margin-top: 1.75rem !important;
+    margin-bottom: 0 !important;
+}
+
+.auth-footer-text a {
+    color: #dc2626 !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+
+.auth-footer-text a:hover {
     text-decoration: underline !important;
 }
