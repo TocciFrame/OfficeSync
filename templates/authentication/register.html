@@ -117,6 +117,18 @@
                 {% endif %}
             </div>
 
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <div class="password-wrapper">
+                    {{ form.confirm_password }}
+                    <button type="button" class="toggle-password">SHOW</button>
+                </div>
+                {% if form.confirm_password.errors %}
+                    <span class="field-error">{{ form.confirm_password.errors.0 }}</span>
+                {% endif %}
+            </div>
+
             <button type="submit" id="submit-btn" class="btn btn-primary btn-block">Create Account</button>
         </form>
 

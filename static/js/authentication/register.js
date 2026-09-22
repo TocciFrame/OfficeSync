@@ -1,17 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     const roleCardGroup = document.querySelector('.role-card-group');
     const roleHiddenInput = document.getElementById('id_role');
-    const togglePasswordBtn = document.querySelector('.toggle-password');
-    const passwordInput = document.querySelector('input[name="password"]');
-
-    // 1. Password Visibility Toggle
-    if (togglePasswordBtn && passwordInput) {
-        togglePasswordBtn.addEventListener('click', () => {
-            const isPassword = passwordInput.getAttribute('type') === 'password';
-            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-            togglePasswordBtn.textContent = isPassword ? 'HIDE' : 'SHOW';
-        });
-    }
+    // 1. Password Visibility Toggle (works for both Password and Confirm Password)
+    document.querySelectorAll('.password-wrapper').forEach(wrapper => {
+        const toggleBtn = wrapper.querySelector('.toggle-password');
+        const input = wrapper.querySelector('input');
+        if (toggleBtn && input) {
+            toggleBtn.addEventListener('click', () => {
+                const isPassword = input.getAttribute('type') === 'password';
+                input.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleBtn.textContent = isPassword ? 'HIDE' : 'SHOW';
+            });
+        }
+    });
 
     // 2. Role Card Selection Handler (Event Delegation)
     if (roleCardGroup && roleHiddenInput) {

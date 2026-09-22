@@ -1,5 +1,5 @@
 /* Base Reset & Background Scoped Exclusively to Landing Page */
-body.landing-page {
+body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
     background-size: cover !important;
     color: #f8fafc !important;

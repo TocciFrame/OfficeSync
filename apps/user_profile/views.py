@@ -1,21 +1,29 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+
 
 @login_required
 def profile_view(request):
-    profile, _ = Profile.objects.get_or_create(user=request.user)
+    user = request.user
+    is_faculty = hasattr(user, 'faculty_profile')
+    profile = getattr(user, 'faculty_profile', None) if is_faculty else getattr(user, 'student_profile', None)
     message = None
 
-    if request.method == "POST":
-        request.user.first_name = request.POST.get("first_name", "")
-        request.user.last_name = request.POST.get("last_name", "")
-        request.user.email = request.POST.get("email", "")
-        request.user.save()
-
-        profile.role = request.POST.get("role", "")
-        profile.bio = request.POST.get("bio", "")
-        profile.save()
+    if request.method == 'POST':
+        user.first_name = request.POST.get('first_name', '').strip()
+        user.last_name = request.POST.get('last_name', '').strip()
+        user.email = request.POST.get('email', '').strip()
+        user.save()
         message = "Profile updated successfully!"
 
-    return render(request, "user_profile/profile.html", {"profile": profile, "message": message})
+    # The template displays a read-only "role" field; attach it for display only
+    # (it isn't a stored field, since role is already determined by profile type).
+    if profile is not None:
+        profile.role = 'Faculty' if is_faculty else 'Student'
+
+    context = {
+        'is_faculty': is_faculty,
+        'profile': profile,
+        'message': message,
+    }
+    return render(request, 'user_profile/profile.html', context)

@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
-from django.db import IntegrityError
-from apps.user_profile.models import Profile
-from .forms import RegistrationForm, LoginForm
+from apps.user_profile.models import StudentProfile, FacultyProfile
+from .forms import LoginForm, RegisterForm
+
+User = get_user_model()
 
 def login_view(request):
-    # Redirect already logged-in users directly to dashboard
     if request.user.is_authenticated:
-        return redirect('dashboard:index')
+        return redirect('dashboard:dashboard')
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -20,17 +19,25 @@ def login_view(request):
 
             user_obj = None
 
+            # Resolve user by Email or School ID
             if '@' in identifier:
                 try:
                     user_obj = User.objects.get(email__iexact=identifier)
                 except User.DoesNotExist:
                     user_obj = None
             else:
-                try:
-                    profile = Profile.objects.get(school_id__iexact=identifier)
-                    user_obj = profile.user
-                except Profile.DoesNotExist:
-                    user_obj = None
+                if selected_role == 'student':
+                    try:
+                        student_profile = StudentProfile.objects.get(school_id__iexact=identifier)
+                        user_obj = student_profile.user
+                    except StudentProfile.DoesNotExist:
+                        user_obj = None
+                else:
+                    try:
+                        faculty_profile = FacultyProfile.objects.get(school_id__iexact=identifier)
+                        user_obj = faculty_profile.user
+                    except FacultyProfile.DoesNotExist:
+                        user_obj = None
 
             if user_obj:
                 user = authenticate(request, username=user_obj.username, password=password)
@@ -38,11 +45,15 @@ def login_view(request):
                 user = None
 
             if user is not None:
-                profile, _ = Profile.objects.get_or_create(user=user)
+                has_student_profile = hasattr(user, 'student_profile')
+                has_faculty_profile = hasattr(user, 'faculty_profile')
 
-                if profile.role == selected_role or user.is_superuser:
+                is_valid_role = (selected_role == 'student' and has_student_profile) or \
+                                (selected_role == 'faculty' and has_faculty_profile)
+
+                if is_valid_role:
                     login(request, user)
-                    return redirect('dashboard:dashboard') # Target route
+                    return redirect('dashboard:dashboard')
                 else:
                     role_display = "Student" if selected_role == "student" else "Faculty"
                     messages.error(request, f"This account is not registered as a {role_display}.")
@@ -53,45 +64,44 @@ def login_view(request):
 
     return render(request, 'authentication/login.html', {'form': form})
 
+
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard:dashboard')
 
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            school_id = form.cleaned_data['school_id']
             role = form.cleaned_data['role']
-            department = form.cleaned_data['department']
 
-            # 1. Create Django User
             user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
             )
 
-            # 2. Save extended profile details
-            Profile.objects.create(
-                user=user,
-                school_id=school_id,
-                role=role,
-                department=department
-            )
+            if role == 'student':
+                StudentProfile.objects.create(
+                    user=user,
+                    school_id=form.cleaned_data['school_id'],
+                    department=form.cleaned_data['department']
+                )
+            else:
+                FacultyProfile.objects.create(
+                    user=user,
+                    school_id=form.cleaned_data['school_id'],
+                    department=form.cleaned_data['department']
+                )
 
-            messages.success(request, "Account created successfully! Please sign in.")
+            messages.success(request, "Account created successfully! Please log in.")
             return redirect('authentication:login')
     else:
-        form = RegistrationForm()
+        form = RegisterForm()
 
     return render(request, 'authentication/register.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)
