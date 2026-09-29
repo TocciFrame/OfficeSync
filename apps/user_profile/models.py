@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 DEPARTMENT_CHOICES = [
     ('CCS', 'College of Computer Studies'),
@@ -12,12 +12,16 @@ DEPARTMENT_CHOICES = [
 
 class StudentProfile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
-        related_name='student_profile'
+        related_name='student_profile',
+        db_column='user_id'
     )
     school_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
     department = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES, blank=True, null=True)
+
+    class Meta:
+        db_table = 'user_profile_student'
 
     def __str__(self):
         return f"[Student] {self.user.username} ({self.school_id})"
@@ -25,14 +29,18 @@ class StudentProfile(models.Model):
 
 class FacultyProfile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
-        related_name='faculty_profile'
+        related_name='faculty_profile',
+        db_column='user_id'
     )
     school_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
     department = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES, blank=True, null=True)
     office_room = models.CharField(max_length=20, blank=True, null=True)
     office_hours = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        db_table = 'user_profile_faculty'
 
     def __str__(self):
         return f"[Faculty] {self.user.username} ({self.school_id})"

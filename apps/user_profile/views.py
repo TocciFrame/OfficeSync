@@ -15,9 +15,7 @@ def profile_view(request):
         user.email = request.POST.get('email', '').strip()
         user.save()
         message = "Profile updated successfully!"
-
-    # The template displays a read-only "role" field; attach it for display only
-    # (it isn't a stored field, since role is already determined by profile type).
+        
     if profile is not None:
         profile.role = 'Faculty' if is_faculty else 'Student'
 

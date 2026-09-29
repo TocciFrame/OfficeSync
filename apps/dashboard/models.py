@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.user_profile.models import FacultyProfile
 
 class FacultyStatus(models.Model):
     STATUS_CHOICES = [
@@ -9,18 +9,18 @@ class FacultyStatus(models.Model):
         ('OUT', 'Out of Office'),
     ]
 
-    user = models.OneToOneField(
-        User, 
+    faculty = models.OneToOneField(
+        FacultyProfile, 
         on_delete=models.CASCADE, 
-        related_name='faculty_status',
+        related_name='status_record', 
         db_column='faculty_id'
     )
-    room_number = models.CharField(
-        max_length=20, 
-        blank=True, 
-        db_column='current_room'
-    )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='OUT')
+    room_number = models.CharField(
+        max_length=50, 
+        blank=True, 
+        db_column='room_number'
+    )
     back_at = models.CharField(max_length=50, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -28,4 +28,4 @@ class FacultyStatus(models.Model):
         db_table = 'dashboard_faculty_status'
 
     def __str__(self):
-        return f"{self.user.get_full_name() or self.user.username} - {self.status}"
+        return f"{self.faculty.user.get_full_name() or self.faculty.user.username} - {self.status}"
