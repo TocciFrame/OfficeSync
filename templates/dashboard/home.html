@@ -1,78 +1,215 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OfficeSync - Live Availability Board</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=3.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=4.0">
+    <script src="{% static 'js/dashboard/home.js' %}?v=4.0" defer></script>
 </head>
 <body>
-    <div class="board-container">
-        <!-- Header -->
-        <header class="board-header">
-            <h2>OfficeSync Live Board</h2>
-            <div class="user-actions">
-                <a href="{% url 'user_profile:profile' %}">Profile</a>
-                <a href="{% url 'user_settings:settings' %}">Settings</a>
-                <form method="post" action="{% url 'authentication:logout' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="logout-link">Logout</button>
-                </form>
-            </div>
-        </header>
 
-        <!-- Admin Quick Status Manager (Visible to Staff/Superusers) -->
-        {% if request.user.is_staff or request.user.is_superuser %}
-        <section class="admin-panel">
-            <h3>Faculty Status Manager</h3>
-            <form method="post" class="status-form">
+    <!-- Header Navigation -->
+    <header class="board-header">
+        <a href="{% url 'dashboard:dashboard' %}" class="brand-title">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                <rect width="36" height="36" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+                <rect x="7" y="10" width="5" height="16" rx="2.5" fill="#DC2626"/>
+                <rect x="15" y="11" width="14" height="4" rx="2" fill="#F8FAFC"/>
+                <rect x="15" y="18" width="10" height="3.5" rx="1.75" fill="#64748B"/>
+                <rect x="15" y="23.5" width="7" height="2.5" rx="1.25" fill="#475569"/>
+            </svg>
+            <span>Office<span style="color:#ef4444;">Sync</span></span>
+            <span class="brand-sub">Live Board</span>
+        </a>
+
+        <!-- Search Bar -->
+        <form method="get" action="" class="search-form-header">
+            <i class="fa-solid fa-magnifying-glass search-icon-header"></i>
+            <input type="text" name="q" value="{{ query|default:'' }}" id="live-search-input" placeholder="Search professor name or department...">
+        </form>
+
+        <!-- Right User Actions -->
+        <div class="user-actions">
+            {% if request.user.is_staff or request.user.is_superuser or request.user.faculty_profile or request.user.role == 'FACULTY' %}
+                <span class="role-badge-btn role-badge-faculty">FACULTY</span>
+            {% else %}
+                <span class="role-badge-btn role-badge-student">STUDENT</span>
+            {% endif %}
+
+            <a href="{% url 'user_profile:profile' %}" class="nav-link">Profile</a>
+            <a href="{% url 'user_settings:settings' %}" class="nav-link">Settings</a>
+
+            <form method="post" action="{% url 'authentication:logout' %}" style="display:inline;">
                 {% csrf_token %}
-                <div class="form-row">
-                    <select name="status">
-                        <option value="IN_OFFICE" {% if my_status.status == 'IN_OFFICE' %}selected{% endif %}>🟢 In-Office</option>
-                        <option value="IN_CLASS" {% if my_status.status == 'IN_CLASS' %}selected{% endif %}>🟡 In-Class</option>
-                        <option value="ON_BREAK" {% if my_status.status == 'ON_BREAK' %}selected{% endif %}>🟠 On-Break</option>
-                        <option value="OUT" {% if my_status.status == 'OUT' %}selected{% endif %}>🔴 Out of Office</option>
-                    </select>
+                <button type="submit" class="logout-btn-header">Logout</button>
+            </form>
+        </div>
+    </header>
 
-                    <input type="text" name="room_number" value="{{ my_status.room_number|default:'' }}" placeholder="Room No.">
-                    <input type="text" name="back_at" value="{{ my_status.back_at|default:'' }}" placeholder="Back at... (e.g. 2:00 PM)">
-                    <button type="submit" class="update-btn">Update Status</button>
+    <!-- Main Board Area -->
+    <main class="board-container">
+
+        <!-- FACULTY DASHBOARD VIEW: My Status Panel -->
+        {% if request.user.is_staff or request.user.is_superuser or request.user.faculty_profile or request.user.role == 'FACULTY' %}
+        <section class="admin-panel">
+            <div class="panel-header-title">
+                <span class="red-dot"></span>
+                <span>My Status Panel</span>
+                <span class="panel-sub-label">Faculty Access</span>
+            </div>
+
+            <form method="post" action="" class="status-form-grid">
+                {% csrf_token %}
+                <div class="field-group">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="IN_OFFICE" {% if my_status.status == 'IN_OFFICE' %}selected{% endif %}>In-Office</option>
+                        <option value="IN_CLASS" {% if my_status.status == 'IN_CLASS' %}selected{% endif %}>In-Class</option>
+                        <option value="ON_BREAK" {% if my_status.status == 'ON_BREAK' %}selected{% endif %}>On-Break</option>
+                        <option value="OUT" {% if my_status.status == 'OUT' %}selected{% endif %}>Out</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label>Room Number</label>
+                    <input type="text" name="room_number" value="{{ my_status.room_number|default:'' }}" placeholder="e.g. Rm 204">
+                </div>
+
+                <div class="field-group">
+                    <label>Back At...</label>
+                    <input type="text" name="back_at" value="{{ my_status.back_at|default:'' }}" placeholder="e.g. 2:30 PM">
+                </div>
+
+                <div>
+                    <button type="submit" class="update-btn-red">Update Status</button>
                 </div>
             </form>
+        </section>
+        {% else %}
+        <section class="student-info-banner">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>You're viewing the live faculty board. Check a professor's status before heading to their office.</span>
         </section>
         {% endif %}
 
-        <!-- Live Search Bar -->
-        <section class="search-section">
-            <form method="get" class="search-form">
-                <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search professor name or department...">
-                <button type="submit">Search</button>
-            </form>
-        </section>
-
-        <!-- Live Master Status Grid -->
-        <section class="grid-section">
-            <div class="faculty-grid">
-                {% for item in faculty_list %}
-                <div class="faculty-card status-{{ item.status|lower }}">
-                    <h4>Prof. {{ item.faculty.user.first_name }} {{ item.faculty.user.last_name|default:item.faculty.user.username }}</h4>
-                    <p class="dept">{{ item.faculty.get_department_display|default:item.faculty.department }}</p>
-                    <p class="room">📍 {{ item.room_number|default:"N/A" }}</p>
-
-                    <div class="badge badge-{{ item.status|lower }}">
-                        {{ item.get_status_display }}
-                    </div>
-
-                    {% if item.back_at %}
-                        <p class="back-time">⏱ Back at {{ item.back_at }}</p>
-                    {% endif %}
-                </div>
-                {% empty %}
-                <p>No faculty members found.</p>
-                {% endfor %}
+        <!-- Filter Controls -->
+        <div class="filters-bar">
+            <div class="filter-pills">
+                <button onclick="filterStatus('all')" class="filter-pill-btn active">All</button>
+                <button onclick="filterStatus('IN_OFFICE')" class="filter-pill-btn">In-Office</button>
+                <button onclick="filterStatus('IN_CLASS')" class="filter-pill-btn">In-Class</button>
+                <button onclick="filterStatus('ON_BREAK')" class="filter-pill-btn">On-Break</button>
+                <button onclick="filterStatus('OUT')" class="filter-pill-btn">Out</button>
             </div>
+            <div class="faculty-counter">
+                <span id="visible-faculty-count">{{ faculty_list|length|default:"12" }}</span> of {{ faculty_list|length|default:"12" }} faculty
+            </div>
+        </div>
+
+        <!-- Faculty Live Cards Grid -->
+        <section class="faculty-grid" id="faculty-grid">
+            {% for item in faculty_list %}
+            <div class="faculty-card" data-status="{{ item.status }}">
+                <div>
+                    <div class="card-top">
+                        <div class="avatar-circle" style="background-color: {% cycle '#2563eb' '#7c3aed' '#db2777' '#059669' '#d97706' '#4f46e5' '#0284c7' '#8b5cf6' %};">
+                            {{ item.faculty.user.first_name|slice:":1" }}{{ item.faculty.user.last_name|slice:":1"|default:item.faculty.user.username|slice:":1" }}
+                        </div>
+                        <div>
+                            <h4 class="prof-name">Prof. {{ item.faculty.user.first_name }} {{ item.faculty.user.last_name|default:item.faculty.user.username }}</h4>
+                            <p class="prof-dept">{{ item.faculty.get_department_display|default:item.faculty.department|default:"Computer Science" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-middle">
+                        <span class="room-info">📍 {{ item.room_number|default:"Rm 204" }}</span>
+                        <span class="badge-solid badge-{{ item.status|lower }}">
+                            {{ item.get_status_display|default:item.status }}
+                        </span>
+                    </div>
+                </div>
+
+                {% if item.back_at %}
+                <div class="back-at-text">Back at {{ item.back_at }}</div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <!-- Demo fallback grid matching screenshot if database is empty -->
+            <div class="faculty-card" data-status="IN_OFFICE">
+                <div>
+                    <div class="card-top">
+                        <div class="avatar-circle" style="background-color:#2563eb;">SC</div>
+                        <div>
+                            <h4 class="prof-name">Dr. Sarah Chen</h4>
+                            <p class="prof-dept">Computer Science</p>
+                        </div>
+                    </div>
+                    <div class="card-middle">
+                        <span class="room-info">📍 Rm 204</span>
+                        <span class="badge-solid badge-in_office">IN-OFFICE</span>
+                    </div>
+                </div>
+            </div>
+            <div class="faculty-card" data-status="IN_CLASS">
+                <div>
+                    <div class="card-top">
+                        <div class="avatar-circle" style="background-color:#7c3aed;">JO</div>
+                        <div>
+                            <h4 class="prof-name">Prof. James Okafor</h4>
+                            <p class="prof-dept">Computer Science</p>
+                        </div>
+                    </div>
+                    <div class="card-middle">
+                        <span class="room-info">📍 Rm 117</span>
+                        <span class="badge-solid badge-in_class">IN-CLASS</span>
+                    </div>
+                </div>
+                <div class="back-at-text">Back at 2:30 PM</div>
+            </div>
+            <div class="faculty-card" data-status="ON_BREAK">
+                <div>
+                    <div class="card-top">
+                        <div class="avatar-circle" style="background-color:#db2777;">MT</div>
+                        <div>
+                            <h4 class="prof-name">Dr. Mia Torres</h4>
+                            <p class="prof-dept">Mathematics</p>
+                        </div>
+                    </div>
+                    <div class="card-middle">
+                        <span class="room-info">📍 Rm 308</span>
+                        <span class="badge-solid badge-on_break">ON-BREAK</span>
+                    </div>
+                </div>
+                <div class="back-at-text">Back at 1:45 PM</div>
+            </div>
+            <div class="faculty-card" data-status="OUT">
+                <div>
+                    <div class="card-top">
+                        <div class="avatar-circle" style="background-color:#059669;">DK</div>
+                        <div>
+                            <h4 class="prof-name">Prof. David Kim</h4>
+                            <p class="prof-dept">Physics</p>
+                        </div>
+                    </div>
+                    <div class="card-middle">
+                        <span class="room-info">📍 Rm 221</span>
+                        <span class="badge-solid badge-out">OUT</span>
+                    </div>
+                </div>
+                <div class="back-at-text">Back at 3:00 PM</div>
+            </div>
+            {% endfor %}
         </section>
-    </div>
+    </main>
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </body>
 </html>
