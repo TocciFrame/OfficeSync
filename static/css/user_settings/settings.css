@@ -1,31 +1,180 @@
+/* OfficeSync - Settings Stylesheet */
+
 body {
-    font-family: 'Segoe UI', system-ui, sans-serif !important;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #0d131f !important;
+    color: #f8fafc !important;
+    margin: 0;
+    min-height: 100vh;
 }
 
-.card-container {
-    background: #ffffff !important;
-    padding: 3rem !important;
-    border-radius: 12px !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
-    width: 600px !important;
-    border-top: 5px solid #dc2626 !important;
+/* Light mode overrides when html does not have .dark */
+html:not(.dark) body {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
 }
 
-.setting-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1rem 0; border-bottom: 1px solid #f1f5f9;
+html:not(.dark) .settings-card-modal {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
 }
-.setting-row input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
 
-.primary-btn {
-    width: 100%; background-color: #dc2626; color: white; border: none;
-    padding: 0.85rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1.5rem;
+html:not(.dark) .settings-title,
+html:not(.dark) .setting-name {
+    color: #0f172a !important;
 }
-.primary-btn:hover { background-color: #b91c1c; }
-.back-link { display: inline-block; margin-top: 1rem; color: #dc2626; text-decoration: none; font-weight: 500; }
+
+html:not(.dark) .account-box-dark {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) .btn-signout-all {
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+
+.settings-page-container {
+    max-width: 620px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.settings-card-modal {
+    background-color: #162032;
+    border: 1px solid #1f2d47;
+    border-top: 2px solid #dc2626;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.settings-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+}
+
+.settings-subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+}
+
+.section-label-red {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #ef4444;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.85rem;
+    display: block;
+}
+
+.setting-toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.setting-text .setting-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.setting-text .setting-desc {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.15rem;
+}
+
+/* Red Toggle Switch */
+.switch-label {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.switch-label input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-round {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #334155;
+    transition: .3s;
+    border-radius: 22px;
+}
+
+.slider-round:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider-round {
+    background-color: #ef4444;
+}
+
+input:checked + .slider-round:before {
+    transform: translateX(20px);
+}
+
+.account-box-dark {
+    background-color: #0e1626;
+    border: 1px solid #1f2d47;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.btn-signout-all {
+    background: transparent;
+    border: 1px solid #334155;
+    color: #ffffff;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.btn-signout-all:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* Save Changes Button Styling */
+.save-settings-btn {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.65rem 1.5rem !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.save-settings-btn:hover {
+    background-color: #b91c1c !important;
+}

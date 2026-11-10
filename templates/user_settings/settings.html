@@ -1,37 +1,100 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <title>OfficeSync - Settings</title>
-    <link rel="stylesheet" href="{% static 'css/user_settings/settings.css' %}?v=1.2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeSync - Preferences</title>
+    
+    <!-- Instant Theme Application before render -->
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="{% static 'css/user_settings/settings.css' %}?v=5.0">
+    <script src="{% static 'js/user_settings/settings.js' %}?v=5.0" defer></script>
 </head>
 <body>
-    <div class="card-container">
-        <h2>Preferences & Settings</h2>
-        <p>Configure app notifications and display behavior.</p>
 
-        {% if message %}
-            <p style="color: #16a34a; font-weight: 600;">{{ message }}</p>
-        {% endif %}
-
-        <form method="post">
-            {% csrf_token %}
-            <div class="setting-row">
-                <label>Enable Dark Mode</label>
-                <input type="checkbox" name="dark_mode" {% if settings.dark_mode %}checked{% endif %}>
+    <div class="settings-page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+            <a href="{% url 'dashboard:dashboard' %}" style="color:#94a3b8; text-decoration:none; font-size:0.85rem;">← Back to Dashboard</a>
+            <div style="font-weight:700; color:#ffffff;">
+                <span style="color:#dc2626;">|</span> OfficeSync
             </div>
+        </div>
 
-            <div class="setting-row">
-                <label>Email Notifications</label>
-                <input type="checkbox" name="email_notif" {% if settings.email_notif %}checked{% endif %}>
-            </div>
+        <div class="settings-card-modal">
+            <h1 class="settings-title">Preferences</h1>
+            <p class="settings-subtitle">Manage your display and notification settings.</p>
 
-            <button type="submit" class="primary-btn">Save Changes</button>
-        </form>
+            <form method="post" action="">
+                {% csrf_token %}
+                
+                <span class="section-label-red">DISPLAY</span>
+                <div class="setting-toggle-row">
+                    <div class="setting-text">
+                        <div class="setting-name">Enable Dark Mode</div>
+                        <div class="setting-desc">Use the dark slate theme across the entire OfficeSync interface.</div>
+                    </div>
+                    <label class="switch-label">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
 
-        <a href="{% url 'dashboard:dashboard' %}" class="back-link">← Back to Dashboard</a>
+                <span class="section-label-red" style="margin-top:1.5rem;">NOTIFICATIONS</span>
+                <div class="setting-toggle-row">
+                    <div class="setting-text">
+                        <div class="setting-name">Email Notifications</div>
+                        <div class="setting-desc">Receive email updates when followed faculty change their availability status.</div>
+                    </div>
+                    <label class="switch-label">
+                        <input type="checkbox" name="email_notifications">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+
+                <div class="setting-toggle-row">
+                    <div class="setting-text">
+                        <div class="setting-name">Status Change Alerts</div>
+                        <div class="setting-desc">In-app alerts when a professor you're watching comes into office.</div>
+                    </div>
+                    <label class="switch-label">
+                        <input type="checkbox" name="status_alerts" checked>
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+
+                <div class="setting-toggle-row">
+                    <div class="setting-text">
+                        <div class="setting-name">Weekly Digest</div>
+                        <div class="setting-desc">A summary of faculty office hours delivered every Monday morning.</div>
+                    </div>
+                    <label class="switch-label">
+                        <input type="checkbox" name="weekly_digest">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+
+                <div class="account-box-dark">
+                    <div>
+                        <div style="font-size:0.8rem; font-weight:700; color:#94a3b8; text-transform:uppercase;">Account</div>
+                        <div style="font-size:0.85rem; font-weight:600; color:#ffffff; margin-top:0.2rem;">Sign out of all devices</div>
+                        <div style="font-size:0.75rem; color:#64748b;">Ends all active sessions immediately.</div>
+                    </div>
+                    <button type="button" onclick="alert('Signed out of all devices.')" class="btn-signout-all">Sign Out All</button>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; margin-top:1.5rem;">
+                    <button type="submit" class="save-settings-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <script src="{% static 'js/user_settings/settings.js' %}"></script>
 </body>
 </html>
