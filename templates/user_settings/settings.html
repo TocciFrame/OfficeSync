@@ -5,25 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OfficeSync - Preferences</title>
-    
-    <!-- Instant Theme Application before render -->
-    <script>
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-        } else {
-            document.documentElement.classList.add('dark');
-        }
-    </script>
+    <script src="{% static 'js/theme-init.js' %}?v=1.0"></script>
 
-    <link rel="stylesheet" href="{% static 'css/user_settings/settings.css' %}?v=5.0">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=1.0">
+    <link rel="stylesheet" href="{% static 'css/user_settings/settings.css' %}?v=5.1">
     <script src="{% static 'js/user_settings/settings.js' %}?v=5.0" defer></script>
 </head>
 <body>
 
     <div class="settings-page-container">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
-            <a href="{% url 'dashboard:dashboard' %}" style="color:#94a3b8; text-decoration:none; font-size:0.85rem;">← Back to Dashboard</a>
-            <div style="font-weight:700; color:#ffffff;">
+            <a href="{% url 'dashboard:dashboard' %}" style="color:var(--text-secondary); text-decoration:none; font-size:0.85rem;">← Back to Dashboard</a>
+            <div style="font-weight:700; color:var(--text-heading);">
                 <span style="color:#dc2626;">|</span> OfficeSync
             </div>
         </div>
@@ -83,9 +76,9 @@
 
                 <div class="account-box-dark">
                     <div>
-                        <div style="font-size:0.8rem; font-weight:700; color:#94a3b8; text-transform:uppercase;">Account</div>
-                        <div style="font-size:0.85rem; font-weight:600; color:#ffffff; margin-top:0.2rem;">Sign out of all devices</div>
-                        <div style="font-size:0.75rem; color:#64748b;">Ends all active sessions immediately.</div>
+                        <div style="font-size:0.8rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase;">Account</div>
+                        <div style="font-size:0.85rem; font-weight:600; color:var(--text-heading); margin-top:0.2rem;">Sign out of all devices</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Ends all active sessions immediately.</div>
                     </div>
                     <button type="button" onclick="alert('Signed out of all devices.')" class="btn-signout-all">Sign Out All</button>
                 </div>

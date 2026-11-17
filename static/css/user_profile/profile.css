@@ -2,8 +2,8 @@
 
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: #0d131f !important;
-    color: #f8fafc !important;
+    background-color: var(--bg-main) !important;
+    color: var(--text-primary) !important;
     margin: 0;
     min-height: 100vh;
 }
@@ -22,22 +22,22 @@ body {
 }
 
 .back-dash-link {
-    color: #94a3b8;
+    color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.85rem;
 }
 
 .back-dash-link:hover {
-    color: #ffffff;
+    color: var(--text-heading);
 }
 
 .profile-card-modal {
-    background-color: #162032;
-    border: 1px solid #1f2d47;
-    border-top: 2px solid #dc2626;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-top: 2px solid var(--accent-red);
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--card-shadow);
 }
 
 .profile-header-flex {
@@ -63,14 +63,14 @@ body {
 .profile-title {
     font-size: 1.35rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-heading);
     margin: 0 0 0.25rem 0;
 }
 
 .role-tag-red {
     display: inline-block;
-    background-color: #451212;
-    color: #fca5a5;
+    background-color: var(--role-tag-bg);
+    color: var(--role-tag-text);
     font-size: 0.65rem;
     font-weight: 700;
     padding: 0.15rem 0.5rem;
@@ -92,7 +92,7 @@ body {
 .form-field-item label {
     display: block;
     font-size: 0.75rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
     margin-bottom: 0.4rem;
 }
 
@@ -100,9 +100,9 @@ body {
 .form-field-item select,
 .form-field-item textarea {
     width: 100%;
-    background-color: #0e1626;
-    color: #ffffff;
-    border: 1px solid #1f2d47;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     padding: 0.65rem 0.85rem;
     border-radius: 6px;
     font-size: 0.85rem;
@@ -112,7 +112,7 @@ body {
 
 .form-field-item input:focus,
 .form-field-item textarea:focus {
-    border-color: #dc2626;
+    border-color: var(--accent-red);
 }
 
 .save-btn-container {
@@ -122,7 +122,7 @@ body {
 }
 
 .save-profile-btn {
-    background-color: #dc2626;
+    background-color: var(--accent-red);
     color: #ffffff;
     border: none;
     padding: 0.65rem 1.5rem;
@@ -133,5 +133,5 @@ body {
 }
 
 .save-profile-btn:hover {
-    background-color: #b91c1c;
+    background-color: var(--accent-red-hover);
 }

@@ -2,37 +2,10 @@
 
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: #0d131f !important;
-    color: #f8fafc !important;
+    background-color: var(--bg-main) !important;
+    color: var(--text-primary) !important;
     margin: 0;
     min-height: 100vh;
-}
-
-/* Light mode overrides when html does not have .dark */
-html:not(.dark) body {
-    background-color: #f8fafc !important;
-    color: #0f172a !important;
-}
-
-html:not(.dark) .settings-card-modal {
-    background-color: #ffffff !important;
-    border-color: #e2e8f0 !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
-}
-
-html:not(.dark) .settings-title,
-html:not(.dark) .setting-name {
-    color: #0f172a !important;
-}
-
-html:not(.dark) .account-box-dark {
-    background-color: #f1f5f9 !important;
-    border-color: #cbd5e1 !important;
-}
-
-html:not(.dark) .btn-signout-all {
-    color: #0f172a !important;
-    border-color: #cbd5e1 !important;
 }
 
 .settings-page-container {
@@ -42,18 +15,18 @@ html:not(.dark) .btn-signout-all {
 }
 
 .settings-card-modal {
-    background-color: #162032;
-    border: 1px solid #1f2d47;
-    border-top: 2px solid #dc2626;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-top: 2px solid var(--accent-red);
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--card-shadow);
 }
 
 .settings-title {
     font-size: 1.35rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-heading);
     margin: 0 0 0.25rem 0;
 }
 
@@ -83,7 +56,7 @@ html:not(.dark) .btn-signout-all {
 .setting-text .setting-name {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text-heading);
 }
 
 .setting-text .setting-desc {
@@ -111,7 +84,7 @@ html:not(.dark) .btn-signout-all {
     position: absolute;
     cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #334155;
+    background-color: var(--toggle-off);
     transition: .3s;
     border-radius: 22px;
 }
@@ -137,8 +110,8 @@ input:checked + .slider-round:before {
 }
 
 .account-box-dark {
-    background-color: #0e1626;
-    border: 1px solid #1f2d47;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1rem;
     display: flex;
@@ -149,8 +122,8 @@ input:checked + .slider-round:before {
 
 .btn-signout-all {
     background: transparent;
-    border: 1px solid #334155;
-    color: #ffffff;
+    border: 1px solid var(--border-color);
+    color: var(--text-heading);
     padding: 0.4rem 0.85rem;
     border-radius: 6px;
     font-size: 0.75rem;

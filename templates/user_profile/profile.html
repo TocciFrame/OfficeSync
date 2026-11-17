@@ -5,14 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OfficeSync - User Profile</title>
-    <link rel="stylesheet" href="{% static 'css/user_profile/profile.css' %}?v=4.2">
+    <script src="{% static 'js/theme-init.js' %}?v=1.0"></script>
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=1.0">
+    <link rel="stylesheet" href="{% static 'css/user_profile/profile.css' %}?v=4.3">
 </head>
 <body>
 
     <div class="profile-page-container">
         <div class="top-bar-nav">
             <a href="{% url 'dashboard:dashboard' %}" class="back-dash-link">← Back to Dashboard</a>
-            <div style="font-weight:700; color:#ffffff;">
+            <div style="font-weight:700; color:var(--text-heading);">
                 <span style="color:#dc2626;">|</span> OfficeSync
             </div>
         </div>
@@ -79,12 +81,5 @@
             </form>
         </div>
     </div>
-    <script>
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-        } else {
-            document.documentElement.classList.add('dark');
-        }
-    </script>
 </body>
 </html>

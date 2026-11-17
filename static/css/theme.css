@@ -1,0 +1,57 @@
+/* OfficeSync - Shared theme tokens (dark by default, light when html lacks .dark) */
+:root {
+    --bg-main: #0d131f;
+    --bg-header: #131b2e;
+    --bg-card: #162032;
+    --bg-panel: #162032;
+    --bg-input: #0e1626;
+    --border-color: #1f2d47;
+    --border-subtle: #1c2940;
+    --text-primary: #f8fafc;
+    --text-heading: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-red: #dc2626;
+    --accent-red-hover: #b91c1c;
+    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    --toggle-off: #334155;
+    --banner-bg: #0c1c38;
+    --banner-border: #1d3557;
+    --banner-text: #93c5fd;
+    --faculty-bg: #7f1d1d;
+    --faculty-text: #fecaca;
+    --student-bg: #1e3a8a;
+    --student-text: #bfdbfe;
+    --role-tag-bg: #451212;
+    --role-tag-text: #fca5a5;
+    --nav-hover: #ffffff;
+}
+
+html:not(.dark) {
+    --bg-main: #f8fafc;
+    --bg-header: #ffffff;
+    --bg-card: #ffffff;
+    --bg-panel: #ffffff;
+    --bg-input: #f1f5f9;
+    --border-color: #e2e8f0;
+    --border-subtle: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-heading: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --toggle-off: #cbd5e1;
+    --banner-bg: #eff6ff;
+    --banner-border: #bfdbfe;
+    --banner-text: #1d4ed8;
+    --faculty-bg: #fee2e2;
+    --faculty-text: #991b1b;
+    --student-bg: #dbeafe;
+    --student-text: #1e40af;
+    --role-tag-bg: #fee2e2;
+    --role-tag-text: #b91c1c;
+    --nav-hover: #0f172a;
+}
+
+html { color-scheme: dark; }
+html:not(.dark) { color-scheme: light; }
