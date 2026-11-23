@@ -8,8 +8,8 @@
     <script src="{% static 'js/theme-init.js' %}?v=1.0"></script>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=4.1">
-    <script src="{% static 'js/dashboard/home.js' %}?v=4.0" defer></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=4.4">
+    <script src="{% static 'js/dashboard/home.js' %}?v=4.3" defer></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
                 <rect x="15" y="18" width="10" height="3.5" rx="1.75" fill="#64748B"/>
                 <rect x="15" y="23.5" width="7" height="2.5" rx="1.25" fill="#475569"/>
             </svg>
-            <span>Office<span style="color:#ef4444;">Sync</span></span>
+            <span><h2 style="font-family: 'DM Serif Display', Georgia, serif; font-size: 1.3rem; margin: 0;">OfficeSync</h2></span>
             <span class="brand-sub">Live Board</span>
         </a>
 
@@ -77,15 +77,16 @@
 
                 <div class="field-group">
                     <label>Room Number</label>
-                    <input type="text" name="room_number" value="{{ my_status.room_number|default:'' }}" placeholder="e.g. Rm 204">
+                    <input type="text" name="room_number" value="{{ my_status.room_number|default:'' }}" placeholder="Rm 204">
                 </div>
 
                 <div class="field-group">
                     <label>Back At...</label>
-                    <input type="text" name="back_at" value="{{ my_status.back_at|default:'' }}" placeholder="e.g. 2:30 PM">
+                    <input type="time" name="back_at" id="back-at-time" value="{{ back_at_24h|default:'' }}">
                 </div>
 
-                <div>
+                <div class="field-group submit-group">
+                    <label>&nbsp;</label>
                     <button type="submit" class="update-btn-red">Update Status</button>
                 </div>
             </form>
@@ -115,93 +116,94 @@
         <section class="faculty-grid" id="faculty-grid">
             {% for item in faculty_list %}
             <div class="faculty-card" data-status="{{ item.status }}">
-                <div>
-                    <div class="card-top">
-                        <div class="avatar-circle" style="background-color: {% cycle '#2563eb' '#7c3aed' '#db2777' '#059669' '#d97706' '#4f46e5' '#0284c7' '#8b5cf6' %};">
-                            {{ item.faculty.user.first_name|slice:":1" }}{{ item.faculty.user.last_name|slice:":1"|default:item.faculty.user.username|slice:":1" }}
-                        </div>
-                        <div>
-                            <h4 class="prof-name">Prof. {{ item.faculty.user.first_name }} {{ item.faculty.user.last_name|default:item.faculty.user.username }}</h4>
-                            <p class="prof-dept">{{ item.faculty.get_department_display|default:item.faculty.department|default:"Computer Science" }}</p>
-                        </div>
+                <div class="card-top">
+                    <div class="avatar-circle" style="background-color: {% cycle '#2563eb' '#7c3aed' '#db2777' '#059669' '#d97706' '#4f46e5' '#0284c7' '#8b5cf6' %};">
+                        {{ item.faculty.user.first_name|slice:":1" }}{{ item.faculty.user.last_name|slice:":1"|default:item.faculty.user.username|slice:":1" }}
                     </div>
-                    
+                    <div class="card-identity">
+                        <h4 class="prof-name">Prof. {{ item.faculty.user.first_name }} {{ item.faculty.user.last_name|default:item.faculty.user.username }}</h4>
+                        <p class="prof-dept">{{ item.faculty.get_department_display|default:item.faculty.department|default:"Computer Science" }}</p>
+                    </div>
+                </div>
+
+                <div class="card-bottom">
                     <div class="card-middle">
                         <span class="room-info">📍 {{ item.room_number|default:"Rm 204" }}</span>
                         <span class="badge-solid badge-{{ item.status|lower }}">
                             {{ item.get_status_display|default:item.status }}
                         </span>
                     </div>
-                </div>
 
-                {% if item.back_at %}
-                <div class="back-at-text">Back at {{ item.back_at }}</div>
-                {% endif %}
+                    <div class="back-at-text {% if not item.back_at %}empty{% endif %}">
+                        {% if item.back_at %}Back at {{ item.back_at }}{% else %}&nbsp;{% endif %}
+                    </div>
+                </div>
             </div>
             {% empty %}
-            <!-- Demo fallback grid matching screenshot if database is empty -->
+            <!-- Demo fallback grid if database is empty -->
             <div class="faculty-card" data-status="IN_OFFICE">
-                <div>
-                    <div class="card-top">
-                        <div class="avatar-circle" style="background-color:#2563eb;">SC</div>
-                        <div>
-                            <h4 class="prof-name">Dr. Sarah Chen</h4>
-                            <p class="prof-dept">Computer Science</p>
-                        </div>
+                <div class="card-top">
+                    <div class="avatar-circle" style="background-color:#2563eb;">SC</div>
+                    <div class="card-identity">
+                        <h4 class="prof-name">Dr. Sarah Chen</h4>
+                        <p class="prof-dept">Computer Science</p>
                     </div>
+                </div>
+                <div class="card-bottom">
                     <div class="card-middle">
                         <span class="room-info">📍 Rm 204</span>
                         <span class="badge-solid badge-in_office">IN-OFFICE</span>
                     </div>
+                    <div class="back-at-text empty">&nbsp;</div>
                 </div>
             </div>
             <div class="faculty-card" data-status="IN_CLASS">
-                <div>
-                    <div class="card-top">
-                        <div class="avatar-circle" style="background-color:#7c3aed;">JO</div>
-                        <div>
-                            <h4 class="prof-name">Prof. James Okafor</h4>
-                            <p class="prof-dept">Computer Science</p>
-                        </div>
+                <div class="card-top">
+                    <div class="avatar-circle" style="background-color:#7c3aed;">JO</div>
+                    <div class="card-identity">
+                        <h4 class="prof-name">Prof. James Okafor</h4>
+                        <p class="prof-dept">Computer Science</p>
                     </div>
+                </div>
+                <div class="card-bottom">
                     <div class="card-middle">
                         <span class="room-info">📍 Rm 117</span>
                         <span class="badge-solid badge-in_class">IN-CLASS</span>
                     </div>
+                    <div class="back-at-text">Back at 2:30 PM</div>
                 </div>
-                <div class="back-at-text">Back at 2:30 PM</div>
             </div>
             <div class="faculty-card" data-status="ON_BREAK">
-                <div>
-                    <div class="card-top">
-                        <div class="avatar-circle" style="background-color:#db2777;">MT</div>
-                        <div>
-                            <h4 class="prof-name">Dr. Mia Torres</h4>
-                            <p class="prof-dept">Mathematics</p>
-                        </div>
+                <div class="card-top">
+                    <div class="avatar-circle" style="background-color:#db2777;">MT</div>
+                    <div class="card-identity">
+                        <h4 class="prof-name">Dr. Mia Torres</h4>
+                        <p class="prof-dept">Mathematics</p>
                     </div>
+                </div>
+                <div class="card-bottom">
                     <div class="card-middle">
                         <span class="room-info">📍 Rm 308</span>
                         <span class="badge-solid badge-on_break">ON-BREAK</span>
                     </div>
+                    <div class="back-at-text">Back at 1:45 PM</div>
                 </div>
-                <div class="back-at-text">Back at 1:45 PM</div>
             </div>
             <div class="faculty-card" data-status="OUT">
-                <div>
-                    <div class="card-top">
-                        <div class="avatar-circle" style="background-color:#059669;">DK</div>
-                        <div>
-                            <h4 class="prof-name">Prof. David Kim</h4>
-                            <p class="prof-dept">Physics</p>
-                        </div>
+                <div class="card-top">
+                    <div class="avatar-circle" style="background-color:#059669;">DK</div>
+                    <div class="card-identity">
+                        <h4 class="prof-name">Prof. David Kim</h4>
+                        <p class="prof-dept">Physics</p>
                     </div>
+                </div>
+                <div class="card-bottom">
                     <div class="card-middle">
                         <span class="room-info">📍 Rm 221</span>
                         <span class="badge-solid badge-out">OUT</span>
                     </div>
+                    <div class="back-at-text">Back at 3:00 PM</div>
                 </div>
-                <div class="back-at-text">Back at 3:00 PM</div>
             </div>
             {% endfor %}
         </section>

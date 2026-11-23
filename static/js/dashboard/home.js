@@ -4,7 +4,7 @@
 function filterStatus(status) {
     const cards = document.querySelectorAll('.faculty-card');
     const filterBtns = document.querySelectorAll('.filter-pill-btn');
-    
+
     filterBtns.forEach(btn => btn.classList.remove('active'));
 
     if (event && event.currentTarget) {
@@ -26,3 +26,16 @@ function filterStatus(status) {
         countElem.textContent = visibleCount;
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const backAtInput = document.getElementById('back-at-time');
+    if (backAtInput && typeof backAtInput.showPicker === 'function') {
+        backAtInput.addEventListener('click', () => {
+            try {
+                backAtInput.showPicker();
+            } catch (e) {
+                // Ignore if already open or restricted
+            }
+        });
+    }
+});

@@ -1,8 +1,36 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from apps.user_profile.models import FacultyProfile, StudentProfile
 from .models import FacultyStatus
+
+
+def format_back_at_time(raw_time):
+    if not raw_time:
+        return ''
+    raw_time = raw_time.strip()
+    for fmt in ('%H:%M', '%H:%M:%S', '%I:%M %p', '%I:%M%p'):
+        try:
+            dt = datetime.strptime(raw_time, fmt)
+            return dt.strftime('%I:%M %p').lstrip('0')
+        except ValueError:
+            continue
+    return raw_time
+
+
+def to_24h_time(display_time):
+    if not display_time:
+        return ''
+    display_time = display_time.strip()
+    for fmt in ('%I:%M %p', '%I:%M%p', '%H:%M', '%H:%M:%S'):
+        try:
+            dt = datetime.strptime(display_time, fmt)
+            return dt.strftime('%H:%M')
+        except ValueError:
+            continue
+    return ''
+
 
 @login_required
 def dashboard_view(request):
@@ -15,7 +43,6 @@ def dashboard_view(request):
     elif has_faculty_profile:
         is_faculty = True
     else:
-        # Default fallback for regular users: Student
         is_faculty = False
 
     my_status = None
@@ -43,7 +70,7 @@ def dashboard_view(request):
             if new_room is not None:
                 my_status.room_number = new_room
             if new_back_at is not None:
-                my_status.back_at = new_back_at
+                my_status.back_at = format_back_at_time(new_back_at)
 
             my_status.save()
             return redirect('dashboard:dashboard')
@@ -76,6 +103,7 @@ def dashboard_view(request):
     context = {
         'is_faculty': is_faculty,
         'my_status': my_status,
+        'back_at_24h': to_24h_time(my_status.back_at) if my_status else '',
         'faculty_profile': faculty_profile,
         'faculty_list': faculty_list,
         'status_choices': FacultyStatus.STATUS_CHOICES,
