@@ -89,10 +89,8 @@ def dashboard_view(request):
     # 4. Fetch faculty status list for the live board
     query = request.GET.get('q', '').strip()
 
-    # SQL Join
+    # Join: pull faculty + user in a single query
     faculty_list = FacultyStatus.objects.select_related('faculty__user', 'faculty').all()
-    join_sql = str(faculty_list.query)
-    print("JOIN SQL:", join_sql)
 
     if query:
         faculty_list = faculty_list.filter(
@@ -111,13 +109,9 @@ def dashboard_view(request):
     available_now = FacultyProfile.objects.select_related('user').filter(
         id__in=Subquery(in_office_ids)
     )
-    subquery_sql = str(available_now.query)
-    print("SUBQUERY SQL:", subquery_sql)
 
     context = {
         'available_now': available_now,
-        'join_sql': join_sql,
-        'subquery_sql': subquery_sql,
         'is_faculty': is_faculty,
         'my_status': my_status,
         'back_at_24h': to_24h_time(my_status.back_at) if my_status else '',

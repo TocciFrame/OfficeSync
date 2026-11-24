@@ -8,8 +8,8 @@
     <script src="{% static 'js/theme-init.js' %}?v=1.0"></script>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=4.4">
-    <script src="{% static 'js/dashboard/home.js' %}?v=4.3" defer></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}?v=5.1">
+    <script src="{% static 'js/dashboard/home.js' %}?v=5.0" defer></script>
 </head>
 <body>
 
@@ -23,14 +23,16 @@
                 <rect x="15" y="18" width="10" height="3.5" rx="1.75" fill="#64748B"/>
                 <rect x="15" y="23.5" width="7" height="2.5" rx="1.25" fill="#475569"/>
             </svg>
-            <span><h2 style="font-family: 'DM Serif Display', Georgia, serif; font-size: 1.3rem; margin: 0;">OfficeSync</h2></span>
+            <span class="brand-name">OfficeSync</span>
             <span class="brand-sub">Live Board</span>
         </a>
 
         <!-- Search Bar -->
-        <form method="get" action="" class="search-form-header">
-            <i class="fa-solid fa-magnifying-glass search-icon-header"></i>
-            <input type="text" name="q" value="{{ query|default:'' }}" id="live-search-input" placeholder="Search professor name or department...">
+        <form method="get" action="" class="search-form-header" role="search">
+            <i class="fa-solid fa-magnifying-glass search-icon-header" aria-hidden="true"></i>
+            <input type="search" name="q" value="{{ query|default:'' }}" id="live-search-input"
+                   placeholder="Search professor or department…" aria-label="Search faculty" autocomplete="off">
+            <kbd class="search-kbd" aria-hidden="true">/</kbd>
         </form>
 
         <!-- Right User Actions -->
@@ -41,8 +43,8 @@
                 <span class="role-badge-btn role-badge-student">STUDENT</span>
             {% endif %}
 
-            <a href="{% url 'user_profile:profile' %}" class="nav-link">Profile</a>
-            <a href="{% url 'user_settings:settings' %}" class="nav-link">Settings</a>
+            <a href="{% url 'user_profile:profile' %}" class="nav-link"><i class="fa-regular fa-user" aria-hidden="true"></i><span>Profile</span></a>
+            <a href="{% url 'user_settings:settings' %}" class="nav-link"><i class="fa-solid fa-gear" aria-hidden="true"></i><span>Settings</span></a>
 
             <form method="post" action="{% url 'authentication:logout' %}" style="display:inline;">
                 {% csrf_token %}
@@ -66,8 +68,8 @@
             <form method="post" action="" class="status-form-grid">
                 {% csrf_token %}
                 <div class="field-group">
-                    <label>Status</label>
-                    <select name="status">
+                    <label for="status-select">Status</label>
+                    <select name="status" id="status-select">
                         <option value="IN_OFFICE" {% if my_status.status == 'IN_OFFICE' %}selected{% endif %}>In-Office</option>
                         <option value="IN_CLASS" {% if my_status.status == 'IN_CLASS' %}selected{% endif %}>In-Class</option>
                         <option value="ON_BREAK" {% if my_status.status == 'ON_BREAK' %}selected{% endif %}>On-Break</option>
@@ -76,18 +78,18 @@
                 </div>
 
                 <div class="field-group">
-                    <label>Room Number</label>
-                    <input type="text" name="room_number" value="{{ my_status.room_number|default:'' }}" placeholder="Rm 204">
+                    <label for="room-input">Room Number</label>
+                    <input type="text" name="room_number" id="room-input" value="{{ my_status.room_number|default:'' }}" placeholder="Rm 204">
                 </div>
 
                 <div class="field-group">
-                    <label>Back At...</label>
+                    <label for="back-at-time">Back at</label>
                     <input type="time" name="back_at" id="back-at-time" value="{{ back_at_24h|default:'' }}">
                 </div>
 
                 <div class="field-group submit-group">
-                    <label>&nbsp;</label>
-                    <button type="submit" class="update-btn-red">Update Status</button>
+                    <label class="sr-only">Save</label>
+                    <button type="submit" class="update-btn-red"><i class="fa-solid" aria-hidden="true"></i> Update Status</button>
                 </div>
             </form>
         </section>
@@ -101,15 +103,15 @@
         <!-- SUBQUERY: Available Now (faculty whose status is IN_OFFICE) -->
         <section class="available-now-panel">
             <div class="panel-header-title">
-                <span class="red-dot"></span>
+                <span class="live-dot" aria-hidden="true"></span>
                 <span>Available Now</span>
                 <span class="panel-sub-label">Faculty currently In-Office</span>
             </div>
             <div class="available-chips">
                 {% for f in available_now %}
                 <span class="available-chip">
-                    {{ f.user.first_name }} {{ f.user.last_name|default:f.user.username }}
-                    &middot; {{ f.office_room|default:"-" }}
+                    <strong>{{ f.user.first_name }} {{ f.user.last_name|default:f.user.username }}</strong>
+                    {% if f.office_room %}<span class="chip-room"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ f.office_room }}</span>{% endif %}
                 </span>
                 {% empty %}
                 <span class="panel-sub-label">No faculty are in-office right now.</span>
@@ -119,22 +121,22 @@
 
         <!-- Filter Controls -->
         <div class="filters-bar">
-            <div class="filter-pills">
-                <button onclick="filterStatus('all')" class="filter-pill-btn active">All</button>
-                <button onclick="filterStatus('IN_OFFICE')" class="filter-pill-btn">In-Office</button>
-                <button onclick="filterStatus('IN_CLASS')" class="filter-pill-btn">In-Class</button>
-                <button onclick="filterStatus('ON_BREAK')" class="filter-pill-btn">On-Break</button>
-                <button onclick="filterStatus('OUT')" class="filter-pill-btn">Out</button>
+            <div class="filter-pills" role="group" aria-label="Filter by status">
+                <button type="button" data-filter="all" class="filter-pill-btn active" aria-pressed="true">All <span class="pill-count">0</span></button>
+                <button type="button" data-filter="IN_OFFICE" class="filter-pill-btn" aria-pressed="false"><span class="pill-dot dot-in_office"></span>In-Office <span class="pill-count">0</span></button>
+                <button type="button" data-filter="IN_CLASS" class="filter-pill-btn" aria-pressed="false"><span class="pill-dot dot-in_class"></span>In-Class <span class="pill-count">0</span></button>
+                <button type="button" data-filter="ON_BREAK" class="filter-pill-btn" aria-pressed="false"><span class="pill-dot dot-on_break"></span>On-Break <span class="pill-count">0</span></button>
+                <button type="button" data-filter="OUT" class="filter-pill-btn" aria-pressed="false"><span class="pill-dot dot-out"></span>Out <span class="pill-count">0</span></button>
             </div>
-            <div class="faculty-counter">
-                <span id="visible-faculty-count">{{ faculty_list|length|default:"12" }}</span> of {{ faculty_list|length|default:"12" }} faculty
+            <div class="faculty-counter" aria-live="polite">
+                Showing <span id="visible-faculty-count">{{ faculty_list|length }}</span> of <span id="total-faculty-count">{{ faculty_list|length }}</span> faculty
             </div>
         </div>
 
         <!-- Faculty Live Cards Grid -->
         <section class="faculty-grid" id="faculty-grid">
             {% for item in faculty_list %}
-            <div class="faculty-card" data-status="{{ item.status }}">
+            <div class="faculty-card status-{{ item.status|lower }}" data-status="{{ item.status }}" data-search="{{ item.faculty.user.first_name }} {{ item.faculty.user.last_name }} {{ item.faculty.user.username }} {{ item.faculty.department }}">
                 <div class="card-top">
                     <div class="avatar-circle" style="background-color: {% cycle '#2563eb' '#7c3aed' '#db2777' '#059669' '#d97706' '#4f46e5' '#0284c7' '#8b5cf6' %};">
                         {{ item.faculty.user.first_name|slice:":1" }}{{ item.faculty.user.last_name|slice:":1"|default:item.faculty.user.username|slice:":1" }}
@@ -147,20 +149,20 @@
 
                 <div class="card-bottom">
                     <div class="card-middle">
-                        <span class="room-info">📍 {{ item.room_number|default:"Rm 204" }}</span>
+                        <span class="room-info"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ item.room_number|default:"Room not set" }}</span>
                         <span class="badge-solid badge-{{ item.status|lower }}">
                             {{ item.get_status_display|default:item.status }}
                         </span>
                     </div>
 
                     <div class="back-at-text {% if not item.back_at %}empty{% endif %}">
-                        {% if item.back_at %}Back at {{ item.back_at }}{% else %}&nbsp;{% endif %}
+                        {% if item.back_at %}<i class="fa-regular fa-clock" aria-hidden="true"></i> Back at {{ item.back_at }}{% else %}&nbsp;{% endif %}
                     </div>
                 </div>
             </div>
             {% empty %}
             <!-- Demo fallback grid if database is empty -->
-            <div class="faculty-card" data-status="IN_OFFICE">
+            <div class="faculty-card status-in_office" data-status="IN_OFFICE" data-search="Dr. Sarah Chen Computer Science">
                 <div class="card-top">
                     <div class="avatar-circle" style="background-color:#2563eb;">SC</div>
                     <div class="card-identity">
@@ -170,13 +172,13 @@
                 </div>
                 <div class="card-bottom">
                     <div class="card-middle">
-                        <span class="room-info">📍 Rm 204</span>
+                        <span class="room-info"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Rm 204</span>
                         <span class="badge-solid badge-in_office">IN-OFFICE</span>
                     </div>
                     <div class="back-at-text empty">&nbsp;</div>
                 </div>
             </div>
-            <div class="faculty-card" data-status="IN_CLASS">
+            <div class="faculty-card status-in_class" data-status="IN_CLASS" data-search="Prof. James Okafor Computer Science">
                 <div class="card-top">
                     <div class="avatar-circle" style="background-color:#7c3aed;">JO</div>
                     <div class="card-identity">
@@ -186,13 +188,13 @@
                 </div>
                 <div class="card-bottom">
                     <div class="card-middle">
-                        <span class="room-info">📍 Rm 117</span>
+                        <span class="room-info"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Rm 117</span>
                         <span class="badge-solid badge-in_class">IN-CLASS</span>
                     </div>
-                    <div class="back-at-text">Back at 2:30 PM</div>
+                    <div class="back-at-text"><i class="fa-regular fa-clock" aria-hidden="true"></i> Back at 2:30 PM</div>
                 </div>
             </div>
-            <div class="faculty-card" data-status="ON_BREAK">
+            <div class="faculty-card status-on_break" data-status="ON_BREAK" data-search="Dr. Mia Torres Mathematics">
                 <div class="card-top">
                     <div class="avatar-circle" style="background-color:#db2777;">MT</div>
                     <div class="card-identity">
@@ -202,13 +204,13 @@
                 </div>
                 <div class="card-bottom">
                     <div class="card-middle">
-                        <span class="room-info">📍 Rm 308</span>
+                        <span class="room-info"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Rm 308</span>
                         <span class="badge-solid badge-on_break">ON-BREAK</span>
                     </div>
-                    <div class="back-at-text">Back at 1:45 PM</div>
+                    <div class="back-at-text"><i class="fa-regular fa-clock" aria-hidden="true"></i> Back at 1:45 PM</div>
                 </div>
             </div>
-            <div class="faculty-card" data-status="OUT">
+            <div class="faculty-card status-out" data-status="OUT" data-search="Prof. David Kim Physics">
                 <div class="card-top">
                     <div class="avatar-circle" style="background-color:#059669;">DK</div>
                     <div class="card-identity">
@@ -218,23 +220,21 @@
                 </div>
                 <div class="card-bottom">
                     <div class="card-middle">
-                        <span class="room-info">📍 Rm 221</span>
+                        <span class="room-info"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Rm 221</span>
                         <span class="badge-solid badge-out">OUT</span>
                     </div>
-                    <div class="back-at-text">Back at 3:00 PM</div>
+                    <div class="back-at-text"><i class="fa-regular fa-clock" aria-hidden="true"></i> Back at 3:00 PM</div>
                 </div>
             </div>
             {% endfor %}
         </section>
 
-        <!-- Generated SQL (for the JOIN / SUBQUERY demonstration) -->
-        <details class="sql-debug">
-            <summary>Show generated SQL (JOIN &amp; SUBQUERY)</summary>
-            <p class="sql-label">JOIN &mdash; select_related('faculty__user', 'faculty')</p>
-            <pre>{{ join_sql }}</pre>
-            <p class="sql-label">SUBQUERY &mdash; filter(id__in=Subquery(...))</p>
-            <pre>{{ subquery_sql }}</pre>
-        </details>
+        <!-- Empty state (shown by JS when filters match nothing) -->
+        <div class="empty-state" id="empty-state" hidden>
+            <i class="fa-regular fa-face-meh" aria-hidden="true"></i>
+            <p class="empty-title">No faculty match your filters</p>
+            <button type="button" class="reset-btn" id="reset-filters">Clear filters</button>
+        </div>
     </main>
 </body>
 </html>
