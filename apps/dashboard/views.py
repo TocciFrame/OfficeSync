@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Subquery
 from apps.user_profile.models import FacultyProfile, StudentProfile
 from .models import FacultyStatus
 
@@ -88,7 +88,11 @@ def dashboard_view(request):
 
     # 4. Fetch faculty status list for the live board
     query = request.GET.get('q', '').strip()
+
+    # SQL Join
     faculty_list = FacultyStatus.objects.select_related('faculty__user', 'faculty').all()
+    join_sql = str(faculty_list.query)
+    print("JOIN SQL:", join_sql)
 
     if query:
         faculty_list = faculty_list.filter(
@@ -100,7 +104,20 @@ def dashboard_view(request):
 
     faculty_list = faculty_list.order_by('faculty__user__last_name', 'faculty__user__first_name')
 
+    # Subquery to get faculty IDs with status 'IN_OFFICE'
+    # Inner query
+    in_office_ids = FacultyStatus.objects.filter(status='IN_OFFICE').values('faculty_id')
+    # Outer query
+    available_now = FacultyProfile.objects.select_related('user').filter(
+        id__in=Subquery(in_office_ids)
+    )
+    subquery_sql = str(available_now.query)
+    print("SUBQUERY SQL:", subquery_sql)
+
     context = {
+        'available_now': available_now,
+        'join_sql': join_sql,
+        'subquery_sql': subquery_sql,
         'is_faculty': is_faculty,
         'my_status': my_status,
         'back_at_24h': to_24h_time(my_status.back_at) if my_status else '',

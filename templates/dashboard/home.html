@@ -98,6 +98,25 @@
         </section>
         {% endif %}
 
+        <!-- SUBQUERY: Available Now (faculty whose status is IN_OFFICE) -->
+        <section class="available-now-panel">
+            <div class="panel-header-title">
+                <span class="red-dot"></span>
+                <span>Available Now</span>
+                <span class="panel-sub-label">Faculty currently In-Office</span>
+            </div>
+            <div class="available-chips">
+                {% for f in available_now %}
+                <span class="available-chip">
+                    {{ f.user.first_name }} {{ f.user.last_name|default:f.user.username }}
+                    &middot; {{ f.office_room|default:"-" }}
+                </span>
+                {% empty %}
+                <span class="panel-sub-label">No faculty are in-office right now.</span>
+                {% endfor %}
+            </div>
+        </section>
+
         <!-- Filter Controls -->
         <div class="filters-bar">
             <div class="filter-pills">
@@ -207,6 +226,15 @@
             </div>
             {% endfor %}
         </section>
+
+        <!-- Generated SQL (for the JOIN / SUBQUERY demonstration) -->
+        <details class="sql-debug">
+            <summary>Show generated SQL (JOIN &amp; SUBQUERY)</summary>
+            <p class="sql-label">JOIN &mdash; select_related('faculty__user', 'faculty')</p>
+            <pre>{{ join_sql }}</pre>
+            <p class="sql-label">SUBQUERY &mdash; filter(id__in=Subquery(...))</p>
+            <pre>{{ subquery_sql }}</pre>
+        </details>
     </main>
 </body>
 </html>
