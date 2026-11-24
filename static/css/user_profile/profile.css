@@ -14,23 +14,6 @@ body {
     padding: 0 1rem;
 }
 
-.top-bar-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.25rem;
-}
-
-.back-dash-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.85rem;
-}
-
-.back-dash-link:hover {
-    color: var(--text-heading);
-}
-
 .profile-card-modal {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);

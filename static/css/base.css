@@ -1,0 +1,42 @@
+/* OfficeSync - shared base styles (used by templates/base.html) */
+
+.brand-logo {
+    display: block;
+    flex-shrink: 0;
+}
+
+.brand-name {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+/* Back-to-dashboard bar on profile and settings */
+.top-bar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.back-dash-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.back-dash-link:hover {
+    color: var(--text-heading);
+}
+
+.topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.topbar-brand .brand-name {
+    font-size: 1rem;
+}
