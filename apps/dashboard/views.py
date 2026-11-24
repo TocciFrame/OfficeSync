@@ -2,7 +2,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Subquery
-from apps.user_profile.models import FacultyProfile, StudentProfile
+from apps.user_profile.models import DEPARTMENT_CHOICES, FacultyProfile, StudentProfile
 from .models import FacultyStatus
 
 
@@ -93,11 +93,18 @@ def dashboard_view(request):
     faculty_list = FacultyStatus.objects.select_related('faculty__user', 'faculty').all()
 
     if query:
+        # Departments are stored as codes (e.g. "CCS"), so also match the query
+        # against the full names ("College of Computer Studies").
+        matching_codes = [
+            code for code, label in DEPARTMENT_CHOICES
+            if query.lower() in label.lower()
+        ]
         faculty_list = faculty_list.filter(
             Q(faculty__user__first_name__icontains=query) |
             Q(faculty__user__last_name__icontains=query) |
             Q(faculty__user__username__icontains=query) |
-            Q(faculty__department__icontains=query)
+            Q(faculty__department__icontains=query) |
+            Q(faculty__department__in=matching_codes)
         )
 
     faculty_list = faculty_list.order_by('faculty__user__last_name', 'faculty__user__first_name')
